@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<!-- ============================================
+  CONTACT PAGE
+  ============================================ -->
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Form</title>
+
+  <!-- Font and stylesheet imports -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="assets/styles.css">
+  <link rel="stylesheet" href="assets/flexboxes.css">
+  <link rel="stylesheet" href="assets/nav.css">
+  <link rel="stylesheet" href="assets/typography.css">
+  <link rel="stylesheet" href="assets/forms.css">
+  <link rel="stylesheet" href="assets/modal.css">
+  <style>
+    /* Apply Montserrat to all text on this page */
+    * {
+      font-family: 'Montserrat', sans-serif !important;
+      font-weight: 300;
+    }
+
+    .contact-page h1 {
+      font-weight: 600;
+    }
+
+    .contact-page label {
+      font-weight: 400;
+    }
+
+    .contact-page button[type="submit"] {
+      font-weight: 400;
+    }
+
+    /* Contact page: all text black except the submit button (keeps its own style) */
+    .contact-page {
+      color: #000;
+      background-color: transparent;
+    }
+
+    .contact-page h1,
+    .contact-page label,
+    .contact-page .title,
+    .contact-page input,
+    .contact-page select,
+    .contact-page textarea,
+    .contact-page option,
+    .contact-page .modal-content,
+    .contact-page .modal-content h2,
+    .contact-page .modal-content p,
+    .contact-page .modal-close {
+      color: #000;
+    }
+
+    .contact-page .modal-content {
+      background-color: #fff;
+    }
+
+    .contact-page .modal-close:hover {
+      color: #333;
+    }
+  </style>
+
+</head>
+
+<body class="contact-page">
+  
+  <!-- ============================================
+       SITE HEADER
+       ============================================ -->
+  <header class="site-header">
+    <div class="site-brand"></div>
+    <nav class="top-nav" aria-label="Hoofdmenu">
+      <a class="nav-pill nav-home" href="index.html">startpagina</a>
+      <a class="nav-pill nav-weeks" href="index.html#weeks">weken</a>
+      <a class="nav-pill nav-contact" href="contact.html" aria-current="page">contact</a>
+      <a class="nav-pill nav-opdracht" href="opdracht.html">opdracht</a>
+    </nav>
+  </header>
+  
+    <!-- ============================================
+      CONTACT FORM SECTION
+      ============================================ -->
+  <div class="container">
+    <div class="title">    </div>
+
+    <!-- removed redundant homepage text link (kept house icon) -->
+
+    <h1>Contact</h1>
+
+    <form id="contactForm">
+      <label for="name">Naam:</label>
+      <input type="text" id="name" name="name" required>
+
+      <label for="email">E-mail:</label>
+      <input type="email" id="email" name="email" required>
+
+      <label for="subject">Onderwerp:</label>
+      <select id="subject" name="subject">
+        <!-- Weeks 1..11 -->
+        <option value="Week 1">Week 1</option>
+        <option value="Week 2">Week 2</option>
+        <option value="Week 3">Week 3</option>
+        <option value="Week 4">Week 4</option>
+        <option value="Week 5">Week 5</option>
+        <option value="Week 6">Week 6</option>
+        <option value="Week 7">Week 7</option>
+        <option value="Week 8">Week 8</option>
+        <option value="Week 9">Week 9</option>
+        <option value="Week 10">Week 10</option>
+        <option value="Week 11">Week 11</option>
+        <option value="Andere reden">Andere reden</option>
+      </select>
+
+      <div id="otherReasonWrap" style="display:none;">
+        <label for="otherReason">Andere reden (kort):</label>
+        <input type="text" id="otherReason" name="otherReason" placeholder="Beschrijf in het kort">
+      </div>
+
+      <label for="message">Bericht:</label>
+      <textarea id="message" name="message" rows="5" required></textarea>
+
+      <button type="submit">Verzenden</button>
+    </form>
+  </div>
+
+  <!-- ============================================
+       CONFIRMATION MODAL
+       ============================================ -->
+  <div class="modal" id="confirmationModal">
+    <div class="modal-content">
+      <span class="modal-close" id="closeModal">&times;</span>
+      <h2>Thank You!</h2>
+      <p>Your message has been submitted successfully.</p>
+    </div>
+  </div>
+
+    <!-- ============================================
+      JAVASCRIPT
+      ============================================ -->
+  <script>
+    const form = document.getElementById('contactForm');
+    const modal = document.getElementById('confirmationModal');
+    const closeModal = document.getElementById('closeModal');
+
+    // Show/hide "Andere reden" input when selected
+    const subjectSelect = document.getElementById('subject');
+    const otherWrap = document.getElementById('otherReasonWrap');
+    const otherInput = document.getElementById('otherReason');
+
+    if (subjectSelect) {
+      subjectSelect.addEventListener('change', (e) => {
+        if (e.target.value === 'Andere reden') {
+          otherWrap.style.display = 'block';
+          otherInput.setAttribute('required', 'required');
+        } else {
+          otherWrap.style.display = 'none';
+          otherInput.removeAttribute('required');
+          otherInput.value = '';
+        }
+      });
+    }
+
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      // Collect form data (optional)
+      const formData = new FormData(form);
+      const data = Object.fromEntries(formData.entries());
+      console.log("Form submitted:", data);
+
+      // Show modal
+      modal.classList.add('show');
+
+      // Reset form
+      form.reset();
+    });
+
+    // Close modal on X click
+    closeModal.addEventListener('click', () => {
+      modal.classList.remove('show');
+    });
+
+    // Close modal on clicking outside content
+    window.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        modal.classList.remove('show');
+      }
+    });
+  </script>
+  
+  <script src="assets/nav.js"></script>
+  
+  <!-- Footer -->
+  <footer class="site-footer">Dyami Vande Paar 1GDM2</footer>
+</body>
+</html>
